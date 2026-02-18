@@ -1,21 +1,5 @@
-FROM node:20-alpine
+FROM docker.n8n.io/n8nio/n8n:2.7.4
 
-ARG N8N_VERSION=1.90.2
+WORKDIR /home/node
 
-RUN apk add --update graphicsmagick tzdata
-
-USER root
-
-RUN apk --update add --virtual build-dependencies python3 build-base && \
-    npm_config_user=root npm install --location=global n8n@${N8N_VERSION} && \
-    apk del build-dependencies
-
-RUN echo "n8n version:" && n8n --version
-
-WORKDIR /data
-
-EXPOSE $PORT
-
-ENV N8N_USER_ID=root
-
-CMD export N8N_PORT=$PORT && n8n start
+CMD ["sh","-c","export N8N_PORT=$PORT && n8n start"]
